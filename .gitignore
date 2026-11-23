@@ -1,0 +1,87 @@
+# ==========================================
+# Environment variables and secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+app/.env
+app/.env.*
+!app/.env.example
+
+# ==========================================
+# PHP / Composer
+# ==========================================
+app/vendor/
+
+# ==========================================
+# Node.js / NPM
+# ==========================================
+app/node_modules/
+app/npm-debug.log*
+app/yarn-debug.log*
+
+# ==========================================
+# Laravel generated files
+# ==========================================
+app/bootstrap/cache/*
+!app/bootstrap/cache/.gitignore
+
+app/storage/*.key
+app/storage/app/*
+!app/storage/app/.gitignore
+
+app/storage/framework/cache/*
+!app/storage/framework/cache/.gitignore
+
+app/storage/framework/sessions/*
+!app/storage/framework/sessions/.gitignore
+
+app/storage/framework/testing/*
+!app/storage/framework/testing/.gitignore
+
+app/storage/framework/views/*
+!app/storage/framework/views/.gitignore
+
+app/storage/logs/*
+!app/storage/logs/.gitignore
+
+# ==========================================
+# Laravel compiled frontend assets
+# ==========================================
+app/public/build/
+app/public/hot
+
+# ==========================================
+# Testing and coverage
+# ==========================================
+app/.phpunit.cache/
+app/coverage/
+
+# ==========================================
+# IDEs and editors
+# ==========================================
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# ==========================================
+# Operating system
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+# Logs and temporary files
+# ==========================================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# ==========================================
+# SQLite local database
+# ==========================================
+app/database/*.sqlite
