@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TodoStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index()->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->boolean('completed')->default(false);
+            $table->string('status')->default(TodoStatus::Pending->value)->index();
             $table->timestamps();
         });
     }

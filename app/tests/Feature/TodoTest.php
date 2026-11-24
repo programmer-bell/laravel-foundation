@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TodoStatus;
 use App\Models\Todo;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -32,7 +33,7 @@ test('users can create a todo', function () {
     $this->assertDatabaseHas('todos', [
         'user_id' => $user->id,
         'title' => 'Buy milk',
-        'completed' => false,
+        'status' => TodoStatus::Pending->value,
     ]);
 });
 
@@ -42,25 +43,22 @@ test('a title is required', function () {
         ->assertSessionHasErrors('title');
 });
 
-test('users can complete their own todo', function () {
+test('users can change the status of their own todo', function (TodoStatus $status) {
     $todo = Todo::factory()->create();
 
     $this->actingAs($todo->user)
-        ->patch(route('todos.update', $todo), ['completed' => true])
+        ->patch(route('todos.update', $todo), ['status' => $status->value])
         ->assertRedirect();
 
-    expect($todo->refresh()->completed)->toBeTrue();
-});
+    expect($todo->refresh()->status)->toBe($status);
+})->with(TodoStatus::cases());
 
-test('users can uncomplete their own todo', function () {
-    // Boolean false used to fail the `required` rule on update.
-    $todo = Todo::factory()->create(['completed' => true]);
+test('an invalid status is rejected', function () {
+    $todo = Todo::factory()->create();
 
     $this->actingAs($todo->user)
-        ->patch(route('todos.update', $todo), ['completed' => false])
-        ->assertRedirect();
-
-    expect($todo->refresh()->completed)->toBeFalse();
+        ->patch(route('todos.update', $todo), ['status' => 'on_hold'])
+        ->assertSessionHasErrors('status');
 });
 
 test('users can rename their own todo', function () {
@@ -96,7 +94,7 @@ test('users cannot change or delete someone else\'s todo', function () {
     $intruder = User::factory()->create();
 
     $this->actingAs($intruder)
-        ->patch(route('todos.update', $todo), ['completed' => true])
+        ->patch(route('todos.update', $todo), ['status' => TodoStatus::Completed->value])
         ->assertForbidden();
 
     $this->actingAs($intruder)
@@ -110,6 +108,6 @@ test('users cannot change or delete someone else\'s todo', function () {
     $this->assertDatabaseHas('todos', [
         'id' => $todo->id,
         'title' => $todo->title,
-        'completed' => $todo->completed,
+        'status' => $todo->status->value,
     ]);
 });

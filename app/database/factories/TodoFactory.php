@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TodoStatus;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +22,7 @@ class TodoFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => fake()->sentence(4),
-            'completed' => false,
+            'status' => TodoStatus::Pending,
         ];
     }
 }
